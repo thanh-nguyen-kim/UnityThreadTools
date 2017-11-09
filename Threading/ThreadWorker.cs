@@ -1,4 +1,4 @@
-﻿// Copyright (C) Richard Meredith 2017
+// Copyright (C) Richard Meredith 2017
 // Licensed under the MIT License https://opensource.org/licenses/MIT
 
 using System;
@@ -7,45 +7,45 @@ using System.Threading;
 
 public class ThreadWorker
 {
-    private Thread ChildThread = null;
-    private EventWaitHandle SuspendHandle = new EventWaitHandle(true, EventResetMode.ManualReset);
-    private EventWaitHandle AbortHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
-    private bool WantAbort = false;
+	private Thread ChildThread = null;
+	private EventWaitHandle SuspendHandle = new EventWaitHandle(true, EventResetMode.ManualReset);
+	private EventWaitHandle AbortHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+	private bool WantAbort = false;
 
 	public ThreadWorker(IEnumerator threadImplementation) : this()
 	{
 		Start(threadImplementation);
 	}
 
-    public void Start(IEnumerator threadImplementation)
-    {
-        ChildThread = new Thread(ThreadLoop);
-        ChildThread.Start(threadImplementation);
-    }
+	public void Start(IEnumerator threadImplementation)
+	{
+		ChildThread = new Thread(ThreadLoop);
+		ChildThread.Start(threadImplementation);
+	}
 
-    public void Resume()
-    {
-        SuspendHandle.Set();
-    }
+	public void Resume()
+	{
+		SuspendHandle.Set();
+	}
 
-    public void Suspend()
-    {
-        if(!WantAbort)
-            SuspendHandle.Reset();
-    }
+	public void Suspend()
+	{
+		if(!WantAbort)
+			SuspendHandle.Reset();
+	}
 
-    public void Abort(bool block=true)
-    {
-        WantAbort = true;
+	public void Abort(bool block=true)
+	{
+		WantAbort = true;
 
-        Resume();
+		Resume();
 
-        if(block)
-            AbortHandle.WaitOne();
-    }
+		if(block)
+			AbortHandle.WaitOne();
+	}
 
-    private void ThreadLoop(object threadImplementation)
-    {
+	private void ThreadLoop(object threadImplementation)
+	{
 		try
 		{
 			var impl = threadImplementation as IEnumerator;
@@ -64,12 +64,12 @@ public class ThreadWorker
 			UnityEngine.Debug.LogException(e);
 		}
 
-        AbortHandle.Set();
-        ChildThread = null;
-    } 
+		AbortHandle.Set();
+		ChildThread = null;
+	} 
 
-    public bool IsRunning() {return ChildThread != null;}
-    public bool IsCompleted() {return ChildThread == null;}
+	public bool IsRunning() {return ChildThread != null;}
+	public bool IsCompleted() {return ChildThread == null;}
 
 
 #if UNITY_EDITOR
