@@ -1,0 +1,15 @@
+{
+  "name": "com.setik.threading",
+  "version": "0.0.1",
+  "displayName": "Threading Utils",
+  "description": "This is an utility package to handle threading in Unity game",
+  "unity": "2019.3",
+  "unityRelease": "7f1",
+  "keywords": [],
+  "author": {
+    "name": "setik",
+    "email": "thanhnguyenkim12@gmail.com",
+    "url": "https://killertee.wordpress.com/about/"
+  },
+  "type": "tool"
+}
